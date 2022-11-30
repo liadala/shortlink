@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short</title>
+    <link rel="stylesheet" href="/static/w3.css">
+    <link rel="stylesheet" href="/static/w3-theme-black.css">
+</head>
+<body class="w3-theme">
+
+    <div class="w3-padding-64 w3-margin">
+        <div class="w3-card-4 w3-theme-l1">
+            <div class="w3-container w3-light-blue w3-center">
+                <h2>Short URL</h2>
+            </div>
+
+            <div class="w3-container">
+                <p>      
+                    <label class="w3-text-white"><b>URL:</b></label>
+                    <input id="inputURL" class="w3-input w3-border" type="text" value="">
+                    <input id="shortetURL" onclick="this.focus();this.select()" class="w3-input w3-border w3-hide" readonly type="text" value="">
+                </p>
+                <p>
+                    <button id="inputButton" onclick="short()" class="w3-btn w3-green">Short</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function short() {
+            const inputValue = document.getElementById("inputURL").value;
+            console.log(inputValue);
+
+            const xhr = new XMLHttpRequest();
+            // listen for `load` event
+            xhr.onload = () => {
+                // print JSON response
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // parse JSON
+                    var resp = JSON.parse(xhr.response);
+                    document.getElementById('shortetURL').value = `${window.location.origin}/s/${resp.short}`;
+                    document.getElementById('shortetURL').classList.remove('w3-hide');
+
+                    document.getElementById('inputButton').remove();
+                    document.getElementById('inputURL').remove();
+                }
+            };
+            // create a JSON object
+            const json = {
+                "url": inputValue,
+            };
+            // open request
+            xhr.open('POST', '/add');
+            // set `Content-Type` header
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            // send rquest with JSON payload
+            xhr.send(JSON.stringify(json));
+        }
+    </script>
+</body>
+</html>

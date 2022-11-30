@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short</title>
+    <link rel="stylesheet" href="/static/w3.css">
+    <link rel="stylesheet" href="/static/w3-theme-black.css">
+</head>
+<body class="w3-theme">
+
+    <div class="w3-padding-64 w3-margin">
+        <div class="w3-card-4 w3-theme-l1" style="min-width:75%;">
+            <header class="w3-container w3-blue w3-center">
+                <h2>Shorted URL</h2>
+            </header>
+        
+            <div class="w3-container w3-center">
+                <p><u>Visit:</u></p>
+                <textarea class="w3-input w3-border" style="resize:none">{{ . }}</textarea>
+                
+                <a id="acceptButton" href="javascript: void(0);" class="w3-button w3-green w3-disabled"></a>
+                <a href="/" class="w3-button w3-red">Decline</a>
+            </div>
+
+            <footer>
+                <div class="w3-container w3-center">
+                    <p>please be aware that the redirected page is outside our moderation range</p>
+                    <p class="w3-red">only open links you trust</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        (async function(){
+            var count = 10;
+            document.getElementById("acceptButton").innerText = `Accept (${('00' + count).substr(-2)})`;
+            var x = setInterval(function(){
+                document.getElementById("acceptButton").innerText = `Accept (${('00' + count).substr(-2)})`;
+                if (count <= 0) {
+                    let acceptButton = document.getElementById("acceptButton");
+                    acceptButton.classList.remove("w3-disabled");
+                    acceptButton.href = "{{ . }}";
+                    document.getElementById("acceptButton").innerText = `Accept`;
+                    clearInterval(x);
+                }
+                count = count - 1;
+            }, 1000);
+        })();
+    </script>
+
+</body>
+</html>
